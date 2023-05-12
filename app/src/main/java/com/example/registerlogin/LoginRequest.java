@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class LoginRequest extends StringRequest {
     //서버 URL 설정(php파일 연동)
-    final static private String URL = "http://172.20.26.202:8888/Login.php";
+    final static private String URL = "http://203.252.223.253:8888/Login.php";
     //final static private String URL = "https://591f-211-227-109-84.ngrok.io/Login.php";
     private Map<String ,String >map;
 
