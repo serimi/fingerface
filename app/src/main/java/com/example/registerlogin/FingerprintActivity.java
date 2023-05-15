@@ -19,6 +19,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Base64;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
@@ -94,6 +97,31 @@ public class FingerprintActivity extends AppCompatActivity {
         });
 
         generateKeyPair();
+
+    checkKeyPairExistence();
+}
+
+    private void checkKeyPairExistence() {
+        try {
+            keyStore = KeyStore.getInstance("AndroidKeyStore");
+            keyStore.load(null);
+
+            if (keyStore.containsAlias(KEY_NAME)) {
+                // 키 쌍이 존재함
+                KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_NAME, null);
+                PublicKey publicKey = privateKeyEntry.getCertificate().getPublicKey();
+                PrivateKey privateKey = privateKeyEntry.getPrivateKey();
+
+                // 공개 키와 개인 키 출력
+                Log.d(TAG, "Public Key: " + Base64.encodeToString(publicKey.getEncoded(), Base64.DEFAULT));
+                Log.d(TAG, "Private Key: " + Base64.encodeToString(privateKey.getEncoded(), Base64.DEFAULT));
+            } else {
+                // 키 쌍이 존재하지 않음
+                Log.d(TAG, "Key pair not found");
+            }
+        } catch (NoSuchAlgorithmException | CertificateException | IOException | KeyStoreException | UnrecoverableEntryException e) {
+            e.printStackTrace();
+        }
     }
 
     private void generateKeyPair() {
