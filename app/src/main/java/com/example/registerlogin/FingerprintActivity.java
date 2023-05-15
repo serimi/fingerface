@@ -138,7 +138,6 @@ public class FingerprintActivity extends AppCompatActivity {
             return false;
         }
         if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
-            generateKeyPair(); // 키 쌍 생성
             return true;
         } else {
             return false;
